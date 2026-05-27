@@ -25,11 +25,6 @@ def get_connection() -> sqlite3.Connection:
     return conn
 
 
-# ---------------------------------------------------------------------------
-# COPILOT DEMO SPOT  (Beat 1 - velocity)
-# Live-complete the body from the docstring with Copilot in VS Code.
-# Leave the body empty during the demo, then accept the suggestion.
-# ---------------------------------------------------------------------------
 def format_price(amount_cents: int, currency: str = "EUR") -> str:
     """Format an integer amount of cents into a human-readable price string.
 
@@ -44,7 +39,7 @@ def format_price(amount_cents: int, currency: str = "EUR") -> str:
     Returns:
         A formatted price string like "19.99 EUR".
     """
-    # <-- Copilot completes here during the live demo
+
 
 
 @app.route("/products")
@@ -64,13 +59,6 @@ def list_products():
     return jsonify(products)
 
 
-# ---------------------------------------------------------------------------
-# VULNERABLE ENDPOINT  (Beat 2 - catch + Autofix)
-# CWE-89 SQL injection: untrusted request input is concatenated straight
-# into the SQL string. This is the kind of code an AI assistant will happily
-# emit when asked for "a lookup by id". CodeQL flags it as py/sql-injection
-# and Copilot Autofix rewrites it as a parameterized query.
-# ---------------------------------------------------------------------------
 @app.route("/product")
 def get_product():
     """Look up a single product by its id (?id=...)."""
