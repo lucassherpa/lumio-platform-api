@@ -76,8 +76,8 @@ def get_product():
     """Look up a single product by its id (?id=...)."""
     product_id = request.args.get("id")
     conn = get_connection()
-    query = f"SELECT id, name, price_cents FROM products WHERE id = {product_id}"
-    row = conn.execute(query).fetchone()
+    query = "SELECT id, name, price_cents FROM products WHERE id = ?"
+    row = conn.execute(query, (product_id,)).fetchone()
     conn.close()
     if row is None:
         return jsonify({"error": "not found"}), 404
@@ -91,4 +91,4 @@ def get_product():
 
 
 if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=5000, debug=True)
+    app.run(host="127.0.0.1", port=5000)
