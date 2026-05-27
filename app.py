@@ -1,17 +1,11 @@
-"""Lumio demo API.
+"""Lumio product catalog API.
 
 Tiny Flask service over a local SQLite product catalog.
-Two demo surfaces live here:
-
-  1. /products            -> CLEAN. Copilot "velocity" beat.
-                             A docstring-only stub for live completion.
-  2. /product             -> VULNERABLE. CodeQL + Autofix beat.
-                             Classic SQL injection (CWE-89).
 """
 
 import sqlite3
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify
 
 app = Flask(__name__)
 
@@ -41,7 +35,6 @@ def format_price(amount_cents: int, currency: str = "EUR") -> str:
     """
 
 
-
 @app.route("/products")
 def list_products():
     """Return the full product catalog as JSON."""
@@ -57,25 +50,6 @@ def list_products():
         for row in rows
     ]
     return jsonify(products)
-
-
-@app.route("/product")
-def get_product():
-    """Look up a single product by its id (?id=...)."""
-    product_id = request.args.get("id")
-    conn = get_connection()
-    query = "SELECT id, name, price_cents FROM products WHERE id = ?"
-    row = conn.execute(query, (product_id,)).fetchone()
-    conn.close()
-    if row is None:
-        return jsonify({"error": "not found"}), 404
-    return jsonify(
-        {
-            "id": row["id"],
-            "name": row["name"],
-            "price": format_price(row["price_cents"]),
-        }
-    )
 
 
 if __name__ == "__main__":
