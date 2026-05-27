@@ -57,8 +57,8 @@ def get_product():
     """Look up a single product by its id (?id=...)."""
     product_id = request.args.get("id")
     conn = get_connection()
-    query = f"SELECT id, name, price_cents FROM products WHERE id = {product_id}"
-    row = conn.execute(query).fetchone()
+    query = "SELECT id, name, price_cents FROM products WHERE id = ?"
+    row = conn.execute(query, (product_id,)).fetchone()
     conn.close()
     if row is None:
         return jsonify({"error": "not found"}), 404
